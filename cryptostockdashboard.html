@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Aset</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .change {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .up { color: green; }
+        .down { color: red; }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #00aaff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #0088dd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Halaman -->
+    <div>
+        <img src="logo.jpg" alt="Logo Crypto" style="width: 100px; height: 100px; margin-top: 20px;">
+    </div>
+    <div class="container">
+        <h2 id="asset-name"></h2>
+        <img id="asset-logo" src="" alt="Asset Logo">
+        <p class="price" id="asset-price"></p>
+        <p class="change" id="asset-change"></p>
+        <a href="index.html" class="button">Kembali</a>
+        <a id="buy-button" class="button">Beli</a>
+    </div>
+    
+    <script>
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const assetSymbols = {
+             // Koin Kripto
+    BTC: { name: "Bitcoin (BTC)", logo: "https://cryptologos.cc/logos/bitcoin-btc-logo.png" },
+    ETH: { name: "Ethereum (ETH)", logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png" },
+    SOL: { name: "Solana (SOL)", logo: "https://cryptologos.cc/logos/solana-sol-logo.png" },
+    DOGE: { name: "Dogecoin (DOGE)", logo: "https://cryptologos.cc/logos/dogecoin-doge-logo.png" },
+    ADA: { name: "Cardano (ADA)", logo: "https://cryptologos.cc/logos/cardano-ada-logo.png" },
+    XRP: { name: "Ripple (XRP)", logo: "https://cryptologos.cc/logos/xrp-xrp-logo.png" },
+    USDT: { name: "Tether (USDT)", logo: "https://cryptologos.cc/logos/tether-usdt-logo.png" },
+    BNB: { name: "Binance Coin (BNB)", logo: "https://cryptologos.cc/logos/binance-coin-bnb-logo.png" },
+    DOT: { name: "Polkadot (DOT)", logo: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png" },
+    MATIC: { name: "Polygon (MATIC)", logo: "https://cryptologos.cc/logos/polygon-matic-logo.png" },
+
+    // Saham Teknologi
+    META: { name: "Meta Platforms Inc. (META)", logo: "https://logo.clearbit.com/meta.com" },
+    AAPL: { name: "Apple Inc. (AAPL)", logo: "https://logo.clearbit.com/apple.com" },
+    AMZN: { name: "Amazon.com Inc. (AMZN)", logo: "https://logo.clearbit.com/amazon.com" },
+    GOOGL: { name: "Alphabet Inc. (GOOGL)", logo: "https://logo.clearbit.com/google.com" },
+    MSFT: { name: "Microsoft Corporation (MSFT)", logo: "https://logo.clearbit.com/microsoft.com" },
+    TSLA: { name: "Tesla Inc. (TSLA)", logo: "https://logo.clearbit.com/tesla.com" },
+    NFLX: { name: "Netflix Inc. (NFLX)", logo: "https://logo.clearbit.com/netflix.com" },
+    NVDA: { name: "NVIDIA Corporation (NVDA)", logo: "https://logo.clearbit.com/nvidia.com" },
+    BABA: { name: "Alibaba Group Holding Ltd. (BABA)", logo: "https://logo.clearbit.com/alibaba.com" },
+    V: { name: "Visa Inc. (V)", logo: "https://logo.clearbit.com/visa.com" }
+};
+
+        const symbol = getQueryParam("symbol");
+        if (symbol && assetSymbols[symbol]) {
+            document.getElementById("asset-name").innerText = assetSymbols[symbol].name;
+            document.getElementById("asset-logo").src = assetSymbols[symbol].logo;
+            let price = localStorage.getItem(`${symbol.toLowerCase()}-price`) || "Tidak tersedia";
+            let change = localStorage.getItem(`${symbol.toLowerCase()}-change`) || "0";
+            document.getElementById("asset-price").innerText = `Harga: ${price}`;
+            document.getElementById("asset-change").innerText = `Perubahan: ${change}`;
+            document.getElementById("asset-change").classList.add(change.includes("+") ? "up" : "down");
+            document.getElementById("buy-button").href = `beli.html?symbol=${symbol}`;
+        } else {
+            document.getElementById("asset-name").innerText = "Aset tidak ditemukan";
+        }
+    </script>
+</body>
+</html>

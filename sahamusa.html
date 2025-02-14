@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USA Stock Market</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: white;
+        }
+        .stock-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .stock {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            width: 200px;
+            text-align: center;
+        }
+        .stock img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .change.up {
+            color: #4caf50;
+        }
+        .change.down {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+     <!-- Logo Halaman -->
+    <div>
+        <img src="logo.jpg" alt="Logo Crypto" style="width: 100px; height: 100px; margin-top: 20px;">
+    </div>
+    <h1>USA Stock Market</h1>
+    <div class="stock-container" id="stocks"></div>
+    <script>
+        let stocks = {
+            AAPL: { price: 150, logo: "https://logo.clearbit.com/apple.com" },
+            MSFT: { price: 320, logo: "https://logo.clearbit.com/microsoft.com" },
+            GOOGL: { price: 2800, logo: "https://logo.clearbit.com/google.com" },
+            TSLA: { price: 900, logo: "https://logo.clearbit.com/tesla.com" },
+            AMZN: { price: 3500, logo: "https://logo.clearbit.com/amazon.com" },
+            FB: { price: 330, logo: "https://logo.clearbit.com/meta.com" },
+            NFLX: { price: 600, logo: "https://logo.clearbit.com/netflix.com" },
+            NVDA: { price: 220, logo: "https://logo.clearbit.com/nvidia.com" },
+            BABA: { price: 140, logo: "https://logo.clearbit.com/alibaba.com" },
+            AMD: { price: 100, logo: "https://logo.clearbit.com/amd.com" },
+            JPM: { price: 150, logo: "https://logo.clearbit.com/jpmorganchase.com" },
+            WMT: { price: 140, logo: "https://logo.clearbit.com/walmart.com" },
+            V: { price: 230, logo: "https://logo.clearbit.com/visa.com" },
+            MA: { price: 360, logo: "https://logo.clearbit.com/mastercard.com" },
+            DIS: { price: 180, logo: "https://logo.clearbit.com/disney.com" }
+        };
+
+        function generateStocks() {
+            let container = document.getElementById("stocks");
+            container.innerHTML = "";
+            for (let stock in stocks) {
+                container.innerHTML += `
+                    <div class="stock">
+                        <img src="${stocks[stock].logo}" alt="${stock}">
+                        <h2>${stock}</h2>
+                        <p>Price: <span id="${stock}-price">$${stocks[stock].price}</span></p>
+                        <p>Change: <span id="${stock}-change" class="change">+0.00</span></p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateStockPrices() {
+            for (let stock in stocks) {
+                let oldPrice = stocks[stock].price;
+                let newPrice = oldPrice + (Math.random() * 10 - 5).toFixed(2) * 1; 
+                stocks[stock].price = newPrice;
+                
+                document.getElementById(`${stock}-price`).innerText = `$${newPrice.toFixed(2)}`;
+                
+                let changeElement = document.getElementById(`${stock}-change`);
+                let change = (newPrice - oldPrice).toFixed(2);
+                
+                changeElement.innerText = change >= 0 ? `▲ +${change}` : `▼ ${change}`;
+                changeElement.className = change >= 0 ? "change up" : "change down";
+            }
+        }
+
+        generateStocks();
+        setInterval(updateStockPrices, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Pribadi</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        h3 {
+            color: #00aaff;
+            font-size: 1.5em;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0088cc;
+            transform: scale(1.05);
+        }
+
+        .transactions {
+            margin-top: 20px;
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+
+        .transaction {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .transaction:last-child {
+            border-bottom: none;
+        }
+
+        .transaction.income {
+            color: #00ff88;
+        }
+
+        .transaction.expense {
+            color: #ff5555;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .delete-btn:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+     <!-- Logo Halaman -->
+     <div>
+        <img src="logo.jpg" alt="Logo Crypto" style="width: 100px; height: 100px; margin-top: 20px;">
+    </div>
+    <div class="container">
+        <h3>Akun Anda</h3>
+        <p>Total Investasi: <strong id="total-investasi">Rp 0</strong></p>
+        <p>Cash: <strong id="total-cash">Rp 0</strong></p>
+
+        <div class="actions">
+            <button onclick="addTransaction('income')">Terima</button>
+            <button onclick="addTransaction('expense')">Kirim</button>
+            <button onclick="addDeposit()">+ Deposit</button>
+        </div>
+
+        <div class="transactions">
+            <h3>Riwayat Transaksi</h3>
+            <div id="transaction-list">
+                <p>Tidak ada transaksi.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalInvestasi = parseInt(localStorage.getItem("totalInvestasi")) || 10000000;
+        let totalCash = parseInt(localStorage.getItem("totalCash")) || 5000000;
+        let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+        function updateDisplay() {
+            document.getElementById("total-investasi").innerText = "Rp " + totalInvestasi.toLocaleString();
+            document.getElementById("total-cash").innerText = "Rp " + totalCash.toLocaleString();
+            displayTransactions();
+        }
+
+        function saveData() {
+            localStorage.setItem("totalInvestasi", totalInvestasi);
+            localStorage.setItem("totalCash", totalCash);
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+        }
+
+        function addTransaction(type) {
+            let amount = prompt("Masukkan jumlah transaksi (Rp):");
+            if (!amount || isNaN(amount) || amount <= 0) {
+                alert("Jumlah tidak valid!");
+                return;
+            }
+
+            amount = parseInt(amount);
+            let date = new Date().toLocaleString("id-ID");
+
+            if (type === "income") {
+                totalInvestasi += amount;
+                totalCash += amount;
+            } else {
+                if (totalCash < amount) {
+                    alert("Saldo tidak mencukupi!");
+                    return;
+                }
+                totalCash -= amount;
+            }
+
+            transactions.push({ type, amount, date });
+            saveData();
+            updateDisplay();
+        }
+
+        function addDeposit() {
+            let amount = prompt("Masukkan jumlah deposit (Rp):");
+            if (!amount || isNaN(amount) || amount <= 0) {
+                alert("Jumlah tidak valid!");
+                return;
+            }
+
+            amount = parseInt(amount);
+            totalCash += amount;
+            transactions.push({ type: "income", amount, date: new Date().toLocaleString("id-ID"), label: "Deposit" });
+            saveData();
+            updateDisplay();
+        }
+
+        function deleteTransaction(index) {
+            let tx = transactions[index];
+
+            if (tx.label === "Deposit") {
+                totalCash -= tx.amount;
+            } else if (tx.type === "income") {
+                totalInvestasi -= tx.amount;
+                totalCash -= tx.amount;
+            } else {
+                totalCash += tx.amount;
+            }
+
+            transactions.splice(index, 1);
+            saveData();
+            updateDisplay();
+        }
+
+        function displayTransactions() {
+            let transactionList = document.getElementById("transaction-list");
+            transactionList.innerHTML = transactions.length ? "" : "<p>Tidak ada transaksi.</p>";
+
+            transactions.forEach((tx, index) => {
+                let transaction = document.createElement("div");
+                transaction.classList.add("transaction", tx.type);
+                transaction.innerHTML = `
+                    <span>${tx.label || (tx.type === "income" ? "Masuk" : "Keluar")}: Rp ${tx.amount.toLocaleString()}</span>
+                    <span>${tx.date}</span>
+                    <button class="delete-btn" onclick="deleteTransaction(${index})">🗑️</button>
+                `;
+                transactionList.appendChild(transaction);
+            });
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>

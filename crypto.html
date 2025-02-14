@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harga Crypto</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background: #1e1e1e;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        h2 {
+            color: #f4b400;
+        }
+        .prices {
+            margin-top: 20px;
+            font-size: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .coin {
+            width: 200px;
+            margin: 10px;
+            padding: 15px;
+            background: #292929;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        .coin img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Halaman -->
+    <div>
+        <img src="logo.jpg" alt="Logo Crypto" style="width: 100px; height: 100px; margin-top: 20px;">
+    </div>
+    <div class="container">
+        <h2>Harga Crypto</h2>
+        <div class="prices" id="cryptoPrices"></div>
+    </div>
+
+    <script>
+        const cryptoData = {
+            Bitcoin: { price: 650000000, img: "https://cryptologos.cc/logos/bitcoin-btc-logo.png" },
+            Ethereum: { price: 50000000, img: "https://cryptologos.cc/logos/ethereum-eth-logo.png" },
+            Dogecoin: { price: 1000, img: "https://cryptologos.cc/logos/dogecoin-doge-logo.png" },
+            Solana: { price: 2500000, img: "https://cryptologos.cc/logos/solana-sol-logo.png" },
+            Cardano: { price: 12000, img: "https://cryptologos.cc/logos/cardano-ada-logo.png" },
+            XRP: { price: 8000, img: "xrp.png" },
+            Polkadot: { price: 90000, img: "polkadot.png" },
+            Chainlink: { price: 180000, img: "https://cryptologos.cc/logos/chainlink-link-logo.png" },
+            Litecoin: { price: 1400000, img: "https://cryptologos.cc/logos/litecoin-ltc-logo.png" },
+            Stellar: { price: 7000, img: "https://cryptologos.cc/logos/stellar-xlm-logo.png" },
+            Uniswap: { price: 250000, img: "https://cryptologos.cc/logos/uniswap-uni-logo.png" },
+            Avalanche: { price: 1700000, img: "https://cryptologos.cc/logos/avalanche-avax-logo.png" },
+            Tron: { price: 1100, img: "https://cryptologos.cc/logos/tron-trx-logo.png" },
+            Cosmos: { price: 220000, img: "https://cryptologos.cc/logos/cosmos-atom-logo.png" },
+            Tezos: { price: 14000, img: "https://cryptologos.cc/logos/tezos-xtz-logo.png" },
+            Algorand: { price: 7500, img: "https://cryptologos.cc/logos/algorand-algo-logo.png" },
+            VeChain: { price: 1200, img: "https://cryptologos.cc/logos/vechain-vet-logo.png" },
+            EOS: { price: 16000, img: "https://cryptologos.cc/logos/eos-eos-logo.png" },
+            Aave: { price: 3200000, img: "https://cryptologos.cc/logos/aave-aave-logo.png" },
+            Monero: { price: 2900000, img: "https://cryptologos.cc/logos/monero-xmr-logo.png" }
+        };
+
+        function updatePrices() {
+            let output = "";
+            for (let asset in cryptoData) {
+                let data = cryptoData[asset];
+                let change = (Math.random() * 2 - 1) * data.price * 0.01;
+                data.price += change;
+                output += `
+                    <div class="coin">
+                        <img src="${data.img}" alt="${asset}">
+                        <p><strong>${asset}</strong></p>
+                        <p>Rp ${data.price.toFixed(2)}</p>
+                    </div>`;
+            }
+            document.getElementById("cryptoPrices").innerHTML = output;
+        }
+
+        setInterval(updatePrices, 1000);
+        updatePrices();
+    </script>
+</body>
+</html>

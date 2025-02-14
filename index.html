@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Crypto</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .pin-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .pin-input {
+            font-size: 20px;
+            padding: 10px;
+            text-align: center;
+            width: 150px;
+            margin-bottom: 10px;
+        }
+        .pin-button {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="pin-container" id="pin-container">
+        <h2>Masukkan PIN</h2>
+        <input type="password" id="pin-input" class="pin-input" maxlength="6">
+        <button class="pin-button" onclick="checkPin()">Masuk</button>
+    </div>
+    
+    <script>
+        // Fokuskan input PIN saat halaman dimuat
+        window.onload = function() {
+            document.getElementById("pin-input").focus();
+        };
+
+        function checkPin() {
+            const correctPin = "123456";
+            const userPin = document.getElementById("pin-input").value;
+            if (userPin === correctPin) {
+                window.location.href = "dashboard.html";
+            } else {
+                alert("PIN salah, coba lagi!");
+            }
+        }
+    </script>
+</body>
+</html>

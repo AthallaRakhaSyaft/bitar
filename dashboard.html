@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Crypto</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+       /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #121212; /* Background hitam */
+    color: white; /* Warna teks putih untuk kontras */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 60px; /* Supaya konten tidak tertutup navbar */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #1e1e1e; /* Latar belakang abu-abu gelap */
+    border-bottom: 2px solid #333;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+/* Buttons */
+.actions button {
+    background: #00aaff; /* Tombol biru terang */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.actions button:hover {
+    background: #0088dd; /* Tombol biru lebih gelap pada hover */
+}
+
+/* Sections */
+.market, .stock-market {
+    padding: 20px;
+}
+
+h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    font-size: 1.5em;
+}
+
+/* Grid untuk daftar crypto dan saham */
+.crypto-list, .stock-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.crypto-item, .stock-item {
+    background: #222; /* Background gelap untuk setiap item */
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+
+.crypto-item:hover, .stock-item:hover {
+    background: #333; /* Warna hover sedikit lebih terang */
+    transform: scale(1.03);
+}
+
+/* Images */
+img {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+/* Price and Indicators */
+.price {
+    font-weight: bold;
+}
+
+.up {
+    color: #00ff00; /* Warna hijau untuk harga naik */
+}
+
+.down {
+    color: #ff4444; /* Warna merah untuk harga turun */
+}
+
+/* Container untuk profil dan input */
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e; /* Latar belakang gelap untuk container */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #333; /* Border abu-abu gelap */
+}
+
+/* Styling untuk judul dan elemen lainnya */
+h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #4CAF50; /* Warna hijau untuk teks */
+    text-align: center;
+}
+
+.profile-pic {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 20px auto;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+}
+
+input[type="text"], input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #444; /* Border abu-abu gelap */
+    background: #333; /* Background gelap untuk input */
+    color: white;
+    font-size: 16px;
+}
+
+input[type="text"]:focus {
+    border-color: #4CAF50; /* Highlight hijau saat fokus */
+    outline: none;
+}
+
+button {
+    background-color: #4CAF50; /* Tombol hijau */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    background-color: #45a049; /* Tombol hijau lebih gelap saat hover */
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+strong {
+    font-weight: bold;
+}
+
+/* Navbar fixed di bawah */
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1e1e1e; /* Latar belakang navbar */
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 -4px 8px rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 20px;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, #00aaff, #0055ff);
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
+}
+
+.button:hover {
+    background: linear-gradient(135deg, #0088dd, #0033cc);
+    transform: scale(1.05);
+}
+
+.button:active {
+    transform: scale(0.95);
+}
+
+/* Responsif Design */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .actions {
+        margin-top: 10px;
+    }
+    .crypto-list, .stock-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+    }
+
+    button {
+        padding: 10px;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Logo Halaman -->
+     <center>
+        <div>
+            <img src="logo.jpg" alt="Logo Crypto" style="width: 100px; height: 100px; margin-top: 20px;">
+        </div>
+     </center>
+    <div class="container">
+        <h3>Profil Anda</h3>
+        <img id="profile-pic" class="profile-pic" src="https://via.placeholder.com/100" alt="Foto Profil">
+        <input type="file" id="file-input" accept="image/*" class="hidden">
+        <button onclick="document.getElementById('file-input').click()">Ubah Foto</button>
+        
+        <p>Nama: <strong id="display-name">-</strong></p>
+        <input type="text" id="name-input" placeholder="Masukkan nama">
+        <button onclick="saveProfile()">Simpan Profil</button>
+
+        <h3>Akun Anda</h3>
+        <p>Total Investasi: <strong id="total-investasi">Rp 0</strong></p>
+        <p>Cash: <strong id="total-cash">Rp 0</strong></p>
+    </div>
+    
+    <main>
+        <section class="market">
+            <h2>Pasar Crypto (IDR)</h2>
+            <div class="crypto-list">
+                <div class="crypto-item" onclick="goToDashboard('BTC')">
+                    <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                    <div>
+                        <span>Bitcoin (BTC)</span>
+                        <span class="price" id="btc-price">Rp 650,000,000</span>
+                    </div>
+                    <span class="change" id="btc-change"></span>
+                    <span class="diff" id="btc-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('ETH')">
+                    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum">
+                    <div>
+                        <span>Ethereum (ETH)</span>
+                        <span class="price" id="eth-price">Rp 45,000,000</span>
+                    </div>
+                    <span class="change" id="eth-diff"></span>
+                    <span class="diff" id="eth-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('SOL')">
+                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana">
+                    <div>
+                        <span>Solana (SOL)</span>
+                        <span class="price" id="sol-price">Rp 1,500,000</span>
+                    </div>
+                    <span class="change" id="sol-diff"></span>
+                    <span class="diff" id="sol-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('DOGE')">
+                    <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" alt="Dogecoin">
+                    <div>
+                        <span>Dogecoin (DOGE)</span>
+                        <span class="price" id="doge-price">Rp 1,200</span>
+                    </div>
+                    <span class="change" id="doge-diff"></span>
+                    <span class="diff" id="doge-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('ADA')">
+                    <img src="https://cryptologos.cc/logos/cardano-ada-logo.png" alt="Cardano">
+                    <div>
+                        <span>Cardano (ADA)</span>
+                        <span class="price" id="ada-price">Rp 15,000</span>
+                    </div>
+                    <span class="change" id="ada-diff"></span>
+                    <span class="diff" id="ada-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('XRP')">
+                    <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png" alt="XRP">
+                    <div>
+                        <span>XRP (XRP)</span>
+                        <span class="price" id="xrp-price">Rp 10,000</span>
+                    </div>
+                    <span class="change" id="xrp-diff"></span>
+                    <span class="diff" id="xrp-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('USDT')">
+                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="Tether">
+                    <div>
+                        <span>Tether (USDT)</span>
+                        <span class="price" id="usdt-price">Rp 15,500</span>
+                    </div>
+                    <span class="change" id="usdt-diff"></span>
+                    <span class="diff" id="usdt-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('BNB')">
+                    <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Binance Coin">
+                    <div>
+                        <span>Binance Coin (BNB)</span>
+                        <span class="price" id="bnb-price">Rp 6,500,000</span>
+                    </div>
+                    <span class="change" id="bnb-diff"></span>
+                    <span class="diff" id="bnb-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('DOT')">
+                    <img src="https://cryptologos.cc/logos/polkadot-new-dot-logo.png" alt="Polkadot">
+                    <div>
+                        <span>Polkadot (DOT)</span>
+                        <span class="price" id="dot-price">Rp 250,000</span>
+                    </div>
+                    <span class="change" id="dot-diff"></span>
+                    <span class="diff" id="dot-diff"></span>
+                </div>
+                <div class="crypto-item" onclick="goToDashboard('MATIC')">
+                    <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon">
+                    <div>
+                        <span>Polygon (MATIC)</span>
+                        <span class="price" id="matic-price">Rp 12,000</span>
+                    </div>
+                    <span class="change" id="matic-diff"></span>
+                    <span class="diff" id="matic-diff"></span>
+                </div>
+            </div>            
+        </section>
+        
+        <section class="stock-market">
+            <h2>Saham Dunia</h2>
+            <div class="stock-list">
+                <div class="stock-item" onclick="goToDashboard('META')">
+                    <img src="meta.png" alt="Meta">
+                    <div>
+                        <span>Meta (META)</span>
+                        <span class="price" id="meta-price">$450</span>
+                    </div>
+                    <span class="change up" id="meta-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('AAPL')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+                    <div>
+                        <span>Apple (AAPL)</span>
+                        <span class="price" id="apple-price">$150</span>
+                    </div>
+                    <span class="change" id="apple-diff"></span>
+                    <span class="diff" id="apple-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('AMZN')">
+                    <img src="amazon.jpg" alt="Amazon">
+                    <div>
+                        <span>Amazon (AMZN)</span>
+                        <span class="price" id="amazon-price">$3,200</span>
+                    </div>
+                    <span class="change" id="amazon-diff"></span>
+                    <span class="diff" id="amazon-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('GOOGL')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
+                    <div>
+                        <span>Google (GOOGL)</span>
+                        <span class="price" id="google-price">$2,800</span>
+                    </div>
+                    <span class="change" id="google-diff"></span>
+                    <span class="diff" id="google-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('MSFT')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+                    <div>
+                        <span>Microsoft (MSFT)</span>
+                        <span class="price" id="microsoft-price">$320</span>
+                    </div>
+                    <span class="change" id="microsoft-diff"></span>
+                    <span class="diff" id="microsoft-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('TSLA')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png" alt="Tesla">
+                    <div>
+                        <span>Tesla (TSLA)</span>
+                        <span class="price" id="tesla-price">$900</span>
+                    </div>
+                    <span class="change" id="tesla-diff"></span>
+                    <span class="diff" id="tesla-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('NFLX')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+                    <div>
+                        <span>Netflix (NFLX)</span>
+                        <span class="price" id="netflix-price">$600</span>
+                    </div>
+                    <span class="change" id="netflix-diff"></span>
+                    <span class="diff" id="netflix-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('NVDA')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg" alt="Nvidia">
+                    <div>
+                        <span>Nvidia (NVDA)</span>
+                        <span class="price" id="nvidia-price">$700</span>
+                    </div>
+                    <span class="change" id="nvidia-diff"></span>
+                    <span class="diff" id="nvidia-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('BABA')">
+                    <img src="alibaba.jpeg" alt="Alibaba">
+                    <div>
+                        <span>Alibaba (BABA)</span>
+                        <span class="price" id="alibaba-price">$120</span>
+                    </div>
+                    <span class="change" id="alibaba-diff"></span>
+                    <span class="diff" id="alibaba-diff"></span>
+                </div>
+                <div class="stock-item" onclick="goToDashboard('V')">
+                    <img src="visa.png" alt="Visa">
+                    <div>
+                        <span>Visa (V)</span>
+                        <span class="price" id="visa-price">$240</span>
+                    </div>
+                    <span class="change" id="visa-diff"></span>
+                    <span class="diff" id="visa-diff"></span>
+                </div>
+            </div>            
+        </section>
+
+        <div class="navbar">
+            <a href="dashboard.html" class="button">Home</a>
+            <a href="crypto.html" class="button">Crypto</a>
+            <a href="sahamusa.html" class="button">Saham USA</a>
+            <a href="koleksikriptodansaham.html" class="button">Koleksi Kripto dan Saham</a>
+            <a href="watch.html" class="button">Watch</a>
+            <a href="portofolio.html" class="button">Portofolio Pribadi</a>
+            <a href="profil.html" class="button">Profil</a>
+            <a href="index.html" class="button">Logout</a>
+        </div>        
+    </main>
+    
+    <script>
+       const cryptoPrices = {
+    BTC: 650000000,
+    ETH: 45000000,
+    SOL: 1500000,
+    DOGE: 1200,
+    ADA: 15000,
+    XRP: 10000,
+    USDT: 15500,
+    BNB: 6500000,
+    DOT: 250000,
+    MATIC: 12000
+};
+
+const stockPrices = {
+    META: 450,
+    AAPL: 150,
+    AMZN: 3200,
+    GOOGL: 2800,
+    MSFT: 320,
+    TSLA: 900,
+    NFLX: 600,
+    NVDA: 700,
+    BABA: 120,
+    V: 240
+};
+
+function updatePrices(prices, currency) {
+    for (const key in prices) {
+        let oldPrice = prices[key];
+        let change = (Math.random() * (oldPrice * 0.02)) - (oldPrice * 0.01);
+        let newPrice = Math.max(1, oldPrice + change);
+        prices[key] = newPrice;
+        
+        let priceElement = document.getElementById(`${key.toLowerCase()}-price`);
+        let changeElement = document.getElementById(`${key.toLowerCase()}-diff`);
+        
+        priceElement.innerText = currency + newPrice.toLocaleString();
+        
+        let diff = newPrice - oldPrice;
+        changeElement.innerText = diff > 0 ? ` +${diff.toFixed(2)}` : ` ${diff.toFixed(2)}`;
+        
+        // Menentukan warna berdasarkan perubahan harga
+        if (diff > 0) {
+            changeElement.style.color = "green";
+        } else if (diff < 0) {
+            changeElement.style.color = "red";
+        } else {
+            changeElement.style.color = "black";
+        }
+    }
+}
+
+setInterval(() => {
+    updatePrices(cryptoPrices, "Rp ");
+    updatePrices(stockPrices, "$ ");
+}, 1000);
+
+function updateStockPrices() {
+    const stocks = [
+        { id: 'meta', price: 450 },
+        { id: 'apple', price: 150 },
+        { id: 'amazon', price: 3200 },
+        { id: 'google', price: 2800 },
+        { id: 'microsoft', price: 320 },
+        { id: 'tesla', price: 900 },
+        { id: 'netflix', price: 600 },
+        { id: 'nvidia', price: 700 },
+        { id: 'alibaba', price: 120 },
+        { id: 'visa', price: 240 }
+    ];
+
+    stocks.forEach(stock => {
+        let priceElement = document.getElementById(`${stock.id}-price`);
+        let diffElement = document.getElementById(`${stock.id}-diff`);
+
+        if (priceElement && diffElement) {
+            let oldPrice = parseFloat(priceElement.innerText.replace('$', ''));
+            let change = (Math.random() * 10 - 5).toFixed(2); // Naik atau turun max 5 dolar
+            let newPrice = (oldPrice + parseFloat(change)).toFixed(2);
+
+            priceElement.innerText = `$${newPrice}`;
+            
+            if (change > 0) {
+                diffElement.innerText = `+${change}`;
+                diffElement.classList.add('up');
+                diffElement.classList.remove('down');
+            } else {
+                diffElement.innerText = `${change}`;
+                diffElement.classList.add('down');
+                diffElement.classList.remove('up');
+            }
+        }
+    });
+}
+
+function loadProfile() {
+            const storedName = localStorage.getItem("profileName") || "Pengguna";
+            const storedImage = localStorage.getItem("profileImage") || "https://via.placeholder.com/100";
+            const totalInvestasi = localStorage.getItem("totalInvestasi") || 0;
+            const totalCash = localStorage.getItem("totalCash") || 0;
+
+            document.getElementById("display-name").innerText = storedName;
+            document.getElementById("name-input").value = storedName;
+            document.getElementById("profile-pic").src = storedImage;
+            document.getElementById("total-investasi").innerText = "Rp " + parseInt(totalInvestasi).toLocaleString();
+            document.getElementById("total-cash").innerText = "Rp " + parseInt(totalCash).toLocaleString();
+        }
+
+        function saveProfile() {
+            const newName = document.getElementById("name-input").value.trim();
+            if (newName) {
+                localStorage.setItem("profileName", newName);
+                document.getElementById("display-name").innerText = newName;
+            }
+        }
+
+        document.getElementById("file-input").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("profile-pic").src = e.target.result;
+                    localStorage.setItem("profileImage", e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Cek jika ada foto profil yang tersimpan di LocalStorage
+  window.onload = function() {
+    const savedProfilePic = localStorage.getItem('profilePic');
+    if (savedProfilePic) {
+      document.getElementById('profile-pic').src = savedProfilePic;
+    }
+  };
+
+  document.getElementById('file-input').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Set gambar yang diupload sebagai foto profil
+        const imageUrl = e.target.result;
+        document.getElementById('profile-pic').src = imageUrl;
+
+        // Simpan URL gambar di LocalStorage
+        localStorage.setItem('profilePic', imageUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+        loadProfile();
+
+setInterval(updateStockPrices, 1000);
+
+function goToDashboard(symbol) {
+            window.location.href = `cryptostockdashboard.html?symbol=${symbol}`;
+        }
+    </script>
+
+</body>
+</html>

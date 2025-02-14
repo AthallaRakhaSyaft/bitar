@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi Koin Kripto & Saham</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg"> <!-- Menambahkan favicon -->
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .asset {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .asset img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Halaman -->
+    <div>
+        <img src="logo.jpg" alt="Logo Crypto" style="width: 100px; height: 100px; margin-top: 20px;">
+    </div>
+    <div class="container">
+        <h1>Koleksi Saya</h1>
+        <div id="collection"></div>
+    </div>
+
+    <script>
+        function loadCollection() {
+            let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+            let collectionDiv = document.getElementById("collection");
+            collectionDiv.innerHTML = "";
+
+            if (purchases.length === 0) {
+                collectionDiv.innerHTML = "<p>Tidak ada aset yang dibeli.</p>";
+                return;
+            }
+
+            purchases.forEach((asset, index) => {
+                let assetElement = document.createElement("div");
+                assetElement.classList.add("asset");
+                assetElement.innerHTML = `
+                    <img src="${asset.logo}" alt="${asset.name}">
+                    <div>
+                        <h3>${asset.name}</h3>
+                        <p>Jumlah: ${asset.amount}</p>
+                        <p>Metode: ${asset.payment === "ewallet" ? "E-Wallet" : "Transfer Bank"}</p>
+                    </div>
+                    <button class="delete-btn" onclick="deleteAsset(${index})">Hapus</button>
+                `;
+                collectionDiv.appendChild(assetElement);
+            });
+        }
+
+        function deleteAsset(index) {
+            let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+            purchases.splice(index, 1);
+            localStorage.setItem("purchases", JSON.stringify(purchases));
+            loadCollection();
+        }
+
+        window.onload = loadCollection;
+    </script>
+</body>
+</html>
